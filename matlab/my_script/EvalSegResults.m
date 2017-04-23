@@ -4,7 +4,7 @@ SetupEnv;
 % You do not need to chage values below
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-VOC_root_folder = '{DATA_ROOT}';
+VOC_root_folder = '/home/rasha/Downloads/VOCdevkit/VOC2012';
 
 
 if has_postprocess
@@ -17,14 +17,14 @@ else
   post_folder = 'post_none';
 end
 
-output_mat_folder = fullfile('{ROOT}', dataset, feature_name, model_name, testset, feature_type);
+output_mat_folder = fullfile('/home/rasha/work/DeepLab-Context', dataset, feature_name, model_name, testset, feature_type);
 
-save_root_folder = fullfile('{ROOT}', dataset, feature_name, model_name, testset, feature_type, post_folder);
+save_root_folder = fullfile('/home/rasha/work/DeepLab-Context', dataset, feature_name, model_name, testset, feature_type, post_folder);
 
 fprintf(1, 'Saving to %s\n', save_root_folder);
 
 if strcmp(dataset, 'voc12')
-  year_path = strcat('/results/', '{YEAR}', '/');
+  year_path = strcat('/results/', 'VOC2012', '/');
   seg_res_dir = [save_root_folder year_path];
   seg_root = VOC_root_folder;
   gt_dir   = fullfile(VOC_root_folder, 'SegmentationClass');
@@ -41,10 +41,12 @@ if ~exist(save_result_folder, 'dir')
 end
 
 if strcmp(dataset, 'voc12')
-  VOCopts = GetVOCopts(seg_root, seg_res_dir, trainset, testset, '{YEAR}');
+  VOCopts = GetVOCopts(seg_root, seg_res_dir, trainset, testset, 'VOC2012');
 elseif strcmp(dataset, 'coco')
   VOCopts = GetVOCopts(seg_root, seg_res_dir, trainset, testset, '');
 end
+
+is_mat = true;
 
 if is_mat
   % crop the results

@@ -38,9 +38,12 @@ def train_prototxt_maker(train, init, solver, train_set):
     return model
 
 def train_runner(solver, train_set, model):
+#    cmd = os.environ['CAFFE_DIR'] + os.environ['CAFFE_BIN'] + ' train' \
+#    ' --solver=' + os.environ['CONFIG_DIR'] + '/' + solver + '_' + train_set + '.prototxt' \
+#    + ' --weights=' + model + ' --gpu=' + os.environ['DEV_ID'] #change solver
     cmd = os.environ['CAFFE_DIR'] + os.environ['CAFFE_BIN'] + ' train' \
     ' --solver=' + os.environ['CONFIG_DIR'] + '/' + solver + '_' + train_set + '.prototxt' \
-    + ' --weights=' + model + ' --gpu=' + os.environ['DEV_ID'] #change solver
+    + ' --weights=' + model #change solver
     print 'Running ' + cmd
     subprocess.call(cmd, shell=True)
     

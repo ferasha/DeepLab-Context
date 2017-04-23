@@ -11,7 +11,8 @@ def model_finder(path, type_=1):
 		file_ = files[-1]
 	else:
 		# TODO: need to change the url based on the type of experiment
-		url = 'http://ccvl.stat.ucla.edu/ccvl/init_models/vgg16_20M.caffemodel'
+	#	url = 'http://ccvl.stat.ucla.edu/ccvl/init_models/vgg16_20M.caffemodel'
+		url = 'http://www.cs.jhu.edu/~alanlab/ccvl/init_models/vgg16_20M.caffemodel'
 		print 'Downloading init caffemodel from ' + url
 		filename = wget.download(url)
 		file_ = path + '/init.caffemodel'
@@ -88,6 +89,9 @@ def matlab_path_editor(type_=1):
 	filedata = f.read()
 	f.close()
 
+	print 'os.environ[NET_ID]'
+	print os.environ['NET_ID']
+
 	newdata = filedata.replace('{DIR}', os.getcwd()+'/matlab/my_script')
 	newdata = newdata.replace('{NET_ID}', os.environ['NET_ID'])
 	newdata = newdata.replace('{EXP}', os.environ['EXP'])
@@ -135,6 +139,7 @@ def matlab_result_runner():
 	original_path = str(os.getcwd())
 	path = original_path + '/matlab/my_script'
 	os.chdir(path)
-	subprocess.call("matlab -r 'EvalSegResults; exit;'", shell=True)
+#	subprocess.call("matlab -r 'EvalSegResults; exit;'", shell=True)
+	subprocess.call("matlab -r 'EvalSegResults;'", shell=True)
 	os.chdir(original_path)
 

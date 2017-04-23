@@ -4,8 +4,13 @@ import shutil
 from tools import model_finder, file_editor, matlab_path_editor, matlab_result_runner
 
 def test_variables(type_):
-    set_ = ['val'] if type_==1 else ['val', 'test']
-    caffe_ = '/test.caffemodel' if type_==1 else '/test2.caffemodel'
+#    set_ = ['val'] if type_==1 else ['val', 'test']
+    set_ = ['val'] if type_==1 else ['test']
+#    caffe_ = '/test.caffemodel' if type_==1 else '/test2.caffemodel'
+#    caffe_ = '/train2_iter_8000.caffemodel' if type_==1 else '/init.caffemodel'
+#    caffe_ = '/train2_iter_8000.caffemodel'
+#    caffe_ = '/train_iter_20000.caffemodel'
+    caffe_ = '/train_iter_1000.caffemodel'
     features = '/features/' if type_==1 else '/features2/' 
     return set_, caffe_, features
 
@@ -17,8 +22,13 @@ def test_txt_maker(test_set):
 
 def test_prototext(type_, caffe_, features, test_set):
     model=os.environ['EXP'] + '/model/' + os.environ['NET_ID'] + caffe_
+#    model=os.environ['EXP'] + caffe_
+    print 'model 1'
+    print model
     if not os.path.isfile(model): model=model_finder(os.environ['EXP']+'/model/'+os.environ['NET_ID'], type_)
-
+    
+    print 'model2'
+    print model
     os.environ['FEATURE_DIR']=os.environ['EXP'] + features + os.environ['NET_ID']
     fc8 = os.environ['FEATURE_DIR'] + '/' + test_set + '/fc8'
     crf = os.environ['FEATURE_DIR'] + '/' + test_set + '/crf'
@@ -34,8 +44,10 @@ def test_prototext(type_, caffe_, features, test_set):
 
 def test_runner(model, test_set, test_iter, type_):
     matlab_path_editor(type_)
+#    cmd = os.environ['CAFFE_DIR'] + os.environ['CAFFE_BIN'] + ' test --model=' + os.environ['CONFIG_DIR'] + '/test_' + test_set + '.prototxt' \
+#    ' --weights=' + model + ' --gpu=' + os.environ['DEV_ID'] + ' --iterations=' + str(test_iter)
     cmd = os.environ['CAFFE_DIR'] + os.environ['CAFFE_BIN'] + ' test --model=' + os.environ['CONFIG_DIR'] + '/test_' + test_set + '.prototxt' \
-    ' --weights=' + model + ' --gpu=' + os.environ['DEV_ID'] + ' --iterations=' + str(test_iter)
+    ' --weights=' + model + ' --gpu=' + os.environ['DEV_ID'] +  ' --iterations=1'
     print 'Running ' + cmd
     subprocess.call(cmd, shell=True)
     
